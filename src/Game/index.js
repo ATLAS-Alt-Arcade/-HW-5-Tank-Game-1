@@ -38,7 +38,16 @@ function isCircleCollision(c1, c2) {
 }
 
 function create() {
-  keys = this.input.keyboard.createCursorKeys();
+  keys = {
+    left: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT),
+    right: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT),
+    up: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP),
+    down: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.DOWN),
+    space: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE),
+    a: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A),
+    d: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D),
+  };
+
   graphics = this.add.graphics({
     fillStyle: { color: 0xeeeeee },
     lineStyle: { width: 3, color: 0xeeeeee }
