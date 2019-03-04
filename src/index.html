@@ -13,10 +13,29 @@
       body {
         overflow: hidden;
       }
+
+      #start-screen {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        color: white;
+      }
+
+      .hidden {
+        display: none;
+      }
     </style>
   </head>
 
-  <body></body>
+  <body>
+    <div id="start-screen" class="hidden">
+      <h1>MY GAME</h1>
+      <h2>press space to start</h2>
+    </div>
+
+  </body>
 
   <script>
     const game = require('./Game');
