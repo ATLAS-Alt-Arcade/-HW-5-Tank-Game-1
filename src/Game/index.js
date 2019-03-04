@@ -2,6 +2,7 @@
 const Phaser = require('phaser');
 const Player = require('./Player');
 const Bullet = require('./Bullet');
+const Enemy = require('./Enemy');
 
 const phaserConfig = {
   type: Phaser.AUTO,
@@ -18,6 +19,12 @@ const bullets = [];
 for (let i = 0; i < 20; i ++) {
   bullets.push(new Bullet());
 }
+
+const enemies = [];
+for (let i = 0; i < 20; i ++) {
+  enemies.push(new Enemy());
+}
+let enemySpawnTime = 2000;
 
 // Code for only firing bullet on space up
 let isLastSpaceDown = false;
@@ -78,17 +85,36 @@ function update(totalTime, deltaTime) {
   // Fire bullet once when space key is pressed
   if (keys.space.isDown && !isLastSpaceDown) {
     const newBullet = bullets.find(b => !b.isActive);
-    if (newBullet) newBullet.activate(p1.x, p1.y, p1.forwardRot);
+    if (newBullet) newBullet.activate(p1.x, p1.y, p1.cannonRot);
   }
   isLastSpaceDown = keys.space.isDown;
 
+  // Spawn enemies every 2 sec
+  if (enemySpawnTime < 0) {
+    const newEnemy = enemies.find(e => !e.isActive);
+    if (newEnemy) newEnemy.activate(Math.random() * phaserConfig.width, Math.random() * phaserConfig.height);
+    enemySpawnTime = 5000;
+  }
+  enemySpawnTime -= deltaTime;
+
   // Update bullets
   bullets.forEach(b => b.update(deltaTime));
+  enemies.forEach(e => {
+    if (e.isActive) {
+      bullets.forEach(b => {
+        if (b.isActive && isCircleCollision(e, b)) {
+          e.deactivate();
+          b.deactivate();
+        }
+      });
+    }
+  });
 
   // Draw everything
   graphics.clear();
   p1.draw(graphics);
   bullets.forEach(b => b.draw(graphics));
+  enemies.forEach(e => e.draw(graphics));
 }
 
 phaserConfig.scene = {

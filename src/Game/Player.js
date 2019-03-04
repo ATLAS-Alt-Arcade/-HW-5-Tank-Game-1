@@ -11,6 +11,8 @@ class Player {
     this.forwardRot = 0;
     this.rotSpeed = 1;
 
+    this.cannonRot = 0;
+
     // Geometry used for rendering
     this.baseGeo = [
       new Phaser.Geom.Point(-17, 10),
@@ -32,6 +34,14 @@ class Player {
   }
 
   update(deltaTime, keys) {
+    // Player Movement
+    if (keys.a.isDown) {
+      this.cannonRot -= this.rotSpeed * deltaTime / 1000
+    }
+    else if (keys.d.isDown) {
+      this.cannonRot += this.rotSpeed * deltaTime / 1000
+    }
+
     // Player Movement
     if (keys.left.isDown) {
       this.forwardRot -= this.rotSpeed * deltaTime / 1000
@@ -56,8 +66,12 @@ class Player {
     graphics.translate(this.x, this.y);
     graphics.rotate(this.forwardRot);
     graphics.strokePoints(this.baseGeo);
+    graphics.restore();
 
     // render cannon
+    graphics.save();
+    graphics.translate(this.x, this.y);
+    graphics.rotate(this.cannonRot);
     graphics.fillCircle(0, 0, 12);
     graphics.fillRect(-5, 0, 10, 25);
     graphics.restore();
