@@ -37,6 +37,11 @@ function isCircleCollision(c1, c2) {
   return (distSq < radiiSq);
 }
 
+function preload() {
+  this.load.audio('cannon', ['../assets/explode.wav']);
+  this.load.audio('soundtrack', ['../assets/Holding_Steady.mp3']);
+}
+
 function create() {
   keys = {
     left: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT),
@@ -52,6 +57,8 @@ function create() {
     fillStyle: { color: 0xeeeeee },
     lineStyle: { width: 3, color: 0xeeeeee }
   });
+
+  this.sound.play('soundtrack', { loop: true });
 }
 
 function update(totalTime, deltaTime) {
@@ -79,6 +86,8 @@ function update(totalTime, deltaTime) {
   if (keys.space.isDown && !isLastSpaceDown) {
     const newBullet = bullets.find(b => !b.isActive);
     if (newBullet) newBullet.activate(p1.x, p1.y, p1.forwardRot);
+
+    this.sound.play('cannon', { name: 'burst', start: 0, duration: 0.5, config: {} });
   }
   isLastSpaceDown = keys.space.isDown;
 
@@ -93,7 +102,8 @@ function update(totalTime, deltaTime) {
 
 phaserConfig.scene = {
   create: create,
-  update: update
+  update: update,
+  preload: preload,
 };
 
 let game;
