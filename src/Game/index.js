@@ -18,6 +18,9 @@ let game;
 const GameManager = {
   init: () => {
     game = new Phaser.Game(phaserConfig);
+
+    // Screen shake setup
+    game.canvas.classList.add('shake-enabled');
   },
 };
 

@@ -58,9 +58,45 @@ class MainScene extends Phaser.Scene {
 
     // Code for only firing bullet on space up
     this.isLastSpaceDown = false;
+
+    // Screen Shake
+    this.isShaking = false;
+    this.shakeTime = 0;
+    this.shakeIntensity = 0;
+    this.shakeXScale = 0;
+    this.shakeYScale = 0;
+    this.shakeSpeed = 0;
+  }
+
+  startScreenShake(intensity, duration, speed) {
+    this.isShaking = true;
+    this.shakeIntensity = intensity;
+    this.shakeTime = duration;
+    this.shakeSpeed = speed;
+
+    this.shakeXScale = Math.random() > 0.5 ? 1 : -1;
+    this.shakeYScale = Math.random() > 0.5 ? 1 : -1;
+  }
+
+  updateScreenShake(deltaTime) {
+    if (this.isShaking) {
+      this.shakeTime -= deltaTime;
+
+      const shakeAmount = this.shakeTime / this.shakeSpeed;
+      this.game.canvas.style.left = "" + (Math.cos(shakeAmount) * this.shakeXScale * this.shakeIntensity) + "px";
+      this.game.canvas.style.top = "" + (Math.sin(shakeAmount) * this.shakeYScale * this.shakeIntensity) + "px";
+
+      if (this.shakeTime < 0) {
+        this.isShaking = false;
+        this.game.canvas.style.left = '0px';
+        this.game.canvas.style.top = '0px';
+      }
+
+    }
   }
 
   update(_, deltaTime) {
+    this.updateScreenShake(deltaTime);
     // Update Player
     this.p1.update(deltaTime, this.keys);
 
@@ -85,6 +121,8 @@ class MainScene extends Phaser.Scene {
     if (this.keys.space.isDown && !this.isLastSpaceDown) {
       const newBullet = this.bullets.find(b => !b.isActive);
       if (newBullet) newBullet.activate(this.p1.x, this.p1.y, this.p1.cannonRot);
+
+      this.startScreenShake(3, 100, 50);
     }
     this.isLastSpaceDown = this.keys.space.isDown;
 
@@ -105,6 +143,8 @@ class MainScene extends Phaser.Scene {
           if (b.isActive && isCircleCollision(e, b)) {
             e.deactivate();
             b.deactivate();
+
+            this.startScreenShake(4, 300, 1);
           }
         });
       }
