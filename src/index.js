@@ -7,12 +7,15 @@ let mainWindow;
 
 const windowConfig = {
   width: 800,
-  height: 600
+  height: 600,
+  fullscreen: true,
+  titleBarStyle: 'hidden',
 };
 
 function createWindow() {
   // Create a browser window
   mainWindow = new BrowserWindow({ width: 800, height: 600});
+  mainWindow.setMenu(null);
 
   // load the index.html file
   mainWindow.loadURL(url.format({

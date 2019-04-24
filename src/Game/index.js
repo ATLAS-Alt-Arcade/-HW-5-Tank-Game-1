@@ -6,7 +6,7 @@ const Bullet = require('./Bullet');
 const phaserConfig = {
   type: Phaser.AUTO,
   width: 800,
-  height: 600
+  height: 600,
 };
 
 let graphics;
