@@ -83,13 +83,14 @@ class MainScene extends Phaser.Scene {
       this.shakeTime -= deltaTime;
 
       const shakeAmount = this.shakeTime / this.shakeSpeed;
-      this.game.canvas.style.left = "" + (Math.cos(shakeAmount) * this.shakeXScale * this.shakeIntensity) + "px";
-      this.game.canvas.style.top = "" + (Math.sin(shakeAmount) * this.shakeYScale * this.shakeIntensity) + "px";
+      this.game.canvas.style.left = window.innerWidth / 2 - 400 + (Math.cos(shakeAmount) * this.shakeXScale * this.shakeIntensity) + "px";
+      this.game.canvas.style.top = window.innerHeight / 2 - 300 + (Math.sin(shakeAmount) * this.shakeYScale * this.shakeIntensity) + "px";
+      console.log(Math.cos(shakeAmount) * this.shakeXScale * this.shakeIntensity);
 
       if (this.shakeTime < 0) {
         this.isShaking = false;
-        this.game.canvas.style.left = '0px';
-        this.game.canvas.style.top = '0px';
+        this.game.canvas.style.left = 'calc(50vw - 400px)';
+        this.game.canvas.style.top = 'calc(50vh - 300px)';
       }
 
     }
@@ -122,7 +123,7 @@ class MainScene extends Phaser.Scene {
       const newBullet = this.bullets.find(b => !b.isActive);
       if (newBullet) newBullet.activate(this.p1.x, this.p1.y, this.p1.cannonRot);
 
-      this.startScreenShake(3, 100, 50);
+      this.startScreenShake(3, 500, 50);
     }
     this.isLastSpaceDown = this.keys.space.isDown;
 
